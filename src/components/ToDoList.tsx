@@ -14,7 +14,7 @@ export interface ToDoListProp {
 
 export function ToDoList(prop: ToDoListProp) {
     return (
-        <article className={`collapsed ${prop.category}`}>
+        <article className={`${prop.category}`}>
             <div className="header-element">
                 <h3>{prop.title}</h3>
             </div>
@@ -22,7 +22,7 @@ export function ToDoList(prop: ToDoListProp) {
             {
                 prop.elements.map(
                     (task) => {
-                        const keyName = hash(Math.floor(Math.random() * 10000));
+                        const keyName = hash(Math.floor(Math.random() * 1e9));
                         return (
                         <Task
                             key={keyName}

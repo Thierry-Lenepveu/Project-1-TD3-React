@@ -16,7 +16,7 @@ function Main() {
             {
                 InitialList.map(
                     (item: { title: string; category: string; elements: TaskProp[]; }) => {
-                        const keyName = hash(Math.floor(Math.random() * 10000));
+                        const keyName = hash(Math.floor(Math.random() * 1e9));
                         return (
                         <ToDoList
                             key={keyName}
