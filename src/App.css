@@ -158,10 +158,22 @@ body {
   
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+main h2 {
+  font-family: var(--title-fontfamily);
+  font-size: var(--title-fontsize);
+}
+
 @media screen and (max-width: 768px) {
   main {
       margin-top: 200px;
       margin-bottom: 140px;
+      align-items: center;
   }
 
   section {
@@ -179,6 +191,10 @@ body {
       margin-bottom: 140px;
   }
 
+  main h2 {
+    width: 100%;
+  }
+
   section {
       display: flex;
       flex-direction: row;
@@ -191,8 +207,23 @@ body {
       margin-left: 10vw;
       margin-right: 10vw;
   }
+
+  main h2 {
+    margin-left: 10vw;
+    margin-right: 10vw;
+  }
 }
 
+article.editing {
+  box-shadow: 00px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.editing-element {
+  background-color: rgba(0,0,0,0.2);
+  outline: none;
+  padding: 2px;
+  border-radius: 5px;
+}
 
 @media screen and (max-width: 768px) {
   article {
@@ -238,7 +269,7 @@ h3 {
 }
 
 .option-bar {
-  transition: opacity 0.5s linear, width 0.5s linear, height 0.5s linear;
+  transition: opacity 0.1s linear;
   display: flex;
   justify-content: flex-start;
   gap: 6px;

@@ -2,14 +2,39 @@ import { useState } from "react";
 import OptionButton from "./OptionButton";
 
 interface ListTitleProp {
-    toggle: boolean,
-    setToggle: React.Dispatch<React.SetStateAction<boolean>>,
+    isContentEditable: boolean,
+    setIsContentEditable: React.Dispatch<React.SetStateAction<boolean>>,
+    onClickAddTask: React.MouseEventHandler<HTMLImageElement>,
+    onClickDeleteList: React.MouseEventHandler<HTMLImageElement>,
+    isCollapsed: boolean,
+    setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>,
     title: string
 }
 
-function ListTitle({toggle, setToggle, title}: ListTitleProp) {
+function ListTitle(
+    {isContentEditable, setIsContentEditable, onClickAddTask, onClickDeleteList, isCollapsed, setIsCollapsed, title}: ListTitleProp) {
     const [isDisplayed, setIsDisplayed] = useState<boolean>(false)
+    const [content, setContent] = useState(title);
 
+    const handleInput = (event) => {
+      setContent(event.currentTarget.textContent);
+    };
+
+    const handleAddTask = (event) => {
+        // Actions supplémentaires si nécessaire
+
+        onClickAddTask(event);
+      };
+
+    const handleModifyTitle = (event) => {
+        // Actions supplémentaires si nécessaire
+        setIsContentEditable(!isContentEditable)
+    };
+
+    const handleDeleteList = (event) => {
+        onClickDeleteList(event);
+      };
+    
     return( 
     <div 
         className="header-element"
@@ -23,24 +48,36 @@ function ListTitle({toggle, setToggle, title}: ListTitleProp) {
                 setIsDisplayed(false)
             }
         }>
-        <h3 onClick={
-            () => {
-                setToggle(!toggle);
+        <h3 
+            dangerouslySetInnerHTML={{ __html: content }}
+            contentEditable={isContentEditable}
+            className={isContentEditable ? "editing-element" : ""}
+            onClick={
+                () => {
+                    setIsCollapsed(!isCollapsed);
+                }
             }
-        }>{title}</h3>
+            onBlur={
+                () => {
+                    setIsContentEditable(false)
+                }
+            }
+            onInput={
+                handleInput
+            }></h3>
         <div className={isDisplayed ? "option-bar" : "option-bar hidden"}>
-        <OptionButton
-            onClick={() => alert('plus: onClick')}
-            image="./src/assets/plus.png"
-            name="plus" />
-        <OptionButton
-            onClick={() => alert('modify: onClick')}
-            image="./src/assets/modify.png"
-            name="modify" />
-        <OptionButton
-            onClick={() => alert('delete: onClick')}
-            image="./src/assets/trash.png"
-            name="trash" />
+            <OptionButton
+                onClick={handleAddTask}
+                image="./src/assets/plus.png"
+                name="plus" />
+            <OptionButton
+                onClick={handleModifyTitle}
+                image="./src/assets/modify.png"
+                name="modify" />
+            <OptionButton
+                onClick={handleDeleteList}
+                image="./src/assets/trash.png"
+                name="trash" />
         </div>
     </div>
     );

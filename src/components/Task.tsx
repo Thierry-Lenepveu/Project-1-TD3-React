@@ -2,6 +2,7 @@ import { useState } from "react";
 import OptionButton from "./OptionButton";
 
 export interface TaskProp {
+    id: string,
     checked: boolean,
     name: string
 }
@@ -44,7 +45,8 @@ export function Task(prop: TaskProp) {
                             setChecked(!checked);
                         }
                     }/>
-                <Span checked={checked}
+                <Span id={prop.id} 
+                    checked={checked}
                     name={prop.name} />
             </div>
             <div className={isDisplayed ? "option-bar" : "option-bar hidden"}>
