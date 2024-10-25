@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import OptionButton from "./OptionButton";
+import { ToDoListProp } from "./ToDoList";
 
 interface ListTitleProp {
     isContentEditable: boolean,
@@ -8,28 +9,32 @@ interface ListTitleProp {
     onClickDeleteList: React.MouseEventHandler<HTMLImageElement>,
     isCollapsed: boolean,
     setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>,
-    title: string
-    setTitle: React.Dispatch<React.SetStateAction<string>>,
+    todoListProp: ToDoListProp
+    setTodoListProp: React.Dispatch<React.SetStateAction<ToDoListProp>>,
 }
 
 function ListTitle(
-    {isContentEditable, setIsContentEditable, onClickAddTask, onClickDeleteList, isCollapsed, setIsCollapsed, title, setTitle}: ListTitleProp) {
+    {isContentEditable, setIsContentEditable, onClickAddTask, onClickDeleteList, isCollapsed, setIsCollapsed, todoListProp, setTodoListProp}: ListTitleProp) {
     const [isDisplayed, setIsDisplayed] = useState<boolean>(false)
-    const [content, setContent] = useState(title);
+    const [content, setContent] = useState(todoListProp.title);
 
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
     
     const handleInput = (event) => {
-        if (inputRef !== null) {
-            const start = inputRef.current.selectionStart;
-            const end = inputRef.current.selectionEnd;
-            setContent(event.target.textContent);
-            setTitle(event.target.textContent);
-            if (start !== undefined && end !== undefined) {
-                setTimeout(() => {
-                    event.target.setSelectionRange(start, end);
-                }, 0);
-            }
+        const start = inputRef?.current?.selectionStart;
+        const end = inputRef?.current?.selectionEnd;
+        setContent(event.target.textContent);
+        setTodoListProp({
+            id: todoListProp.id,
+            title: event.target.textContent,
+            category: todoListProp.category,
+            elements: todoListProp.elements
+        });
+        
+        if (start !== undefined && end !== undefined) {
+            setTimeout(() => {
+                event.target.setSelectionRange(start, end);
+            }, 0);
         }
     };
 
@@ -37,9 +42,10 @@ function ListTitle(
         onClickAddTask(event);
     };
 
-    const handleModifyTitle = (event) => {
+    const handleModifyTitle = () => {
         // Actions supplémentaires si nécessaire
-        setIsContentEditable(!isContentEditable)
+        setIsContentEditable(true)
+        inputRef?.current?.focus();
     };
 
     const handleDeleteList = (event) => {
@@ -74,9 +80,7 @@ function ListTitle(
                     setIsContentEditable(false)
                 }
             }
-            onChange={
-                handleInput
-            }></h3>
+            onChange={handleInput}></h3>
         <div className={isDisplayed ? "option-bar" : "option-bar hidden"}>
             <OptionButton
                 onClick={handleAddTask}

@@ -26,7 +26,7 @@ export function ToDoList(prop: ToDoListProp) {
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
     const [todoListProp, setTodoListProp] = useState<ToDoListProp>(prop);
     const [isContentEditable, setIsContentEditable] = useState<boolean>(false)
-    const [title, setTitle] = useState<string>(prop.title)
+
     const AddNewTask = () => {
         const elements = todoListProp.elements
         elements.push({
@@ -44,7 +44,7 @@ export function ToDoList(prop: ToDoListProp) {
     }
 
     return (
-        <article id-list={prop.id} className={setClassName(prop, isCollapsed, isContentEditable)}>
+        <article id-list={prop.id} className={setClassName(todoListProp, isCollapsed, isContentEditable)}>
             <ListTitle
                 isContentEditable={isContentEditable}
                 setIsContentEditable={setIsContentEditable}
@@ -52,8 +52,8 @@ export function ToDoList(prop: ToDoListProp) {
                 onClickDeleteList={() => {}}
                 isCollapsed={isCollapsed}
                 setIsCollapsed={setIsCollapsed}
-                title={title}
-                setTitle={setTitle} />
+                todoListProp={todoListProp}
+                setTodoListProp={setTodoListProp} />
             <ul>
             {
                 todoListProp.elements.map(
