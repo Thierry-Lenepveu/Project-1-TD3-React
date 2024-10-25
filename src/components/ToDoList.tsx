@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Task, TaskProp } from "./Task"
 import sha256 from 'crypto-js/sha256';
+import ListTitle from "./ListTitle";
 
 function hash(number: number) {
     const hash = sha256(number.toString())
@@ -13,11 +15,11 @@ export interface ToDoListProp {
 }
 
 export function ToDoList(prop: ToDoListProp) {
+    const [toggle, setToggle] = useState<boolean>(true)
+
     return (
-        <article className={`${prop.category}`}>
-            <div className="header-element">
-                <h3>{prop.title}</h3>
-            </div>
+        <article className={toggle ? `collapsed  ${prop.category}` : prop.category}>
+            <ListTitle toggle={toggle} setToggle={setToggle} title={prop.title} />
             <ul>
             {
                 prop.elements.map(
