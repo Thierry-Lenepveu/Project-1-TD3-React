@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import OptionButton from "./OptionButton";
 
 interface ListTitleProp {
@@ -9,22 +9,33 @@ interface ListTitleProp {
     isCollapsed: boolean,
     setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>,
     title: string
+    setTitle: React.Dispatch<React.SetStateAction<string>>,
 }
 
 function ListTitle(
-    {isContentEditable, setIsContentEditable, onClickAddTask, onClickDeleteList, isCollapsed, setIsCollapsed, title}: ListTitleProp) {
+    {isContentEditable, setIsContentEditable, onClickAddTask, onClickDeleteList, isCollapsed, setIsCollapsed, title, setTitle}: ListTitleProp) {
     const [isDisplayed, setIsDisplayed] = useState<boolean>(false)
     const [content, setContent] = useState(title);
 
+    const inputRef = useRef(null);
+    
     const handleInput = (event) => {
-      setContent(event.currentTarget.textContent);
+        if (inputRef !== null) {
+            const start = inputRef.current.selectionStart;
+            const end = inputRef.current.selectionEnd;
+            setContent(event.target.textContent);
+            setTitle(event.target.textContent);
+            if (start !== undefined && end !== undefined) {
+                setTimeout(() => {
+                    event.target.setSelectionRange(start, end);
+                }, 0);
+            }
+        }
     };
 
     const handleAddTask = (event) => {
-        // Actions supplémentaires si nécessaire
-
         onClickAddTask(event);
-      };
+    };
 
     const handleModifyTitle = (event) => {
         // Actions supplémentaires si nécessaire
@@ -48,7 +59,8 @@ function ListTitle(
                 setIsDisplayed(false)
             }
         }>
-        <h3 
+        <h3
+            ref={inputRef}
             dangerouslySetInnerHTML={{ __html: content }}
             contentEditable={isContentEditable}
             className={isContentEditable ? "editing-element" : ""}
@@ -62,7 +74,7 @@ function ListTitle(
                     setIsContentEditable(false)
                 }
             }
-            onInput={
+            onChange={
                 handleInput
             }></h3>
         <div className={isDisplayed ? "option-bar" : "option-bar hidden"}>
