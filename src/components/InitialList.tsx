@@ -4,7 +4,7 @@ import { ToDoListProp } from "./ToDoList"
 
 export const InitialList = [
     {
-        id: "",
+        idList: "",
         title : "Course d'automne", 
         category : "article-color-1", // la catégorie correspond au nom de la class qui défini la couleur de fond de la liste.
         elements : [
@@ -56,7 +56,7 @@ export const InitialList = [
         ]
     },
     {
-        id: "",
+        idList: "",
         title : "Livres à lire",
         category : "article-color-4",
         elements : [
@@ -73,7 +73,7 @@ export const InitialList = [
         ]
     },
     {
-        id: "",
+        idList: "",
         title : "Séries à voir",
         category : "article-color-3",
         elements : [
@@ -98,15 +98,24 @@ export function AddIds(list: ToDoListProp[]) {
 }
 
 export function AddId(item: ToDoListProp) {
-    item.id = RandomHashSHA256();
+    if (item.idList.length === 0) {
+        item.idList = RandomHashSHA256();
+    }
+
+    AddIdsToTasks(item.idList, item.elements);
 }
 
-export function AddIdsToTasks(tasks: TaskProp[]) {
+export function AddIdsToTasks(idList: string, tasks: TaskProp[]) {
     for (const item of tasks) {
-        AddIdToTask(item);
+        AddIdToTask(idList, item);
     }
 }
 
-export function AddIdToTask(item: TaskProp) {
-    item.id = RandomHashSHA256();
+export function AddIdToTask(idList: string, item: TaskProp) {
+    if (item.idTask.length === 0) {
+        item.idTask = RandomHashSHA256();
+    }
+    if (item.idList.length === 0) {
+        item.idList = idList
+    }
 }

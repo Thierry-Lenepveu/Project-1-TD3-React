@@ -21,16 +21,17 @@ function ListTitle(
     const inputRef = useRef<HTMLInputElement>(null);
     
     const handleInput = (event) => {
+        console.log(`title: ${todoListProp.title}`);
         const start = inputRef?.current?.selectionStart;
         const end = inputRef?.current?.selectionEnd;
         setContent(event.target.textContent);
         setTodoListProp({
-            id: todoListProp.id,
+            idList: todoListProp.idList,
             title: event.target.textContent,
             category: todoListProp.category,
             elements: todoListProp.elements
         });
-        
+
         if (start !== undefined && end !== undefined) {
             setTimeout(() => {
                 event.target.setSelectionRange(start, end);

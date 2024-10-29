@@ -1,5 +1,4 @@
 import { ToDoList, ToDoListProp } from './ToDoList';
-import { TaskProp } from './Task';
 import { AddIds, AddIdToTask, InitialList } from './InitialList';
 
 
@@ -22,11 +21,11 @@ function Main() {
                 <section className="notes">
                 {
                     InitialList.map(
-                        (item: { id: string, title: string; category: string; elements: TaskProp[]; }) => {
+                        (item: ToDoListProp) => {
                             return (
                             <ToDoList
-                                key={item.id}
-                                id={item.id}
+                                key={item.idList}
+                                idList={item.idList}
                                 title={item.title}
                                 category={item.category}
                                 elements={item.elements} />

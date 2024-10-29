@@ -4,7 +4,7 @@ import ListTitle from "./ListTitle";
 import { RandomHashSHA256 } from "./CryptoTools";
 
 export interface ToDoListProp {
-    id: string,
+    idList: string,
     title: string,
     category: string,
     elements: TaskProp[]
@@ -30,13 +30,14 @@ export function ToDoList(prop: ToDoListProp) {
     const AddNewTask = () => {
         const elements = todoListProp.elements
         elements.push({
-            id: RandomHashSHA256(),
+            idList: todoListProp.idList,
+            idTask: RandomHashSHA256(),
             name: "New Task",
             checked: false
         })
     
         setTodoListProp({
-            id: todoListProp.id,
+            idList: todoListProp.idList,
             title: todoListProp.title,
             category: todoListProp.category,
             elements: elements
@@ -44,7 +45,7 @@ export function ToDoList(prop: ToDoListProp) {
     }
 
     return (
-        <article id-list={prop.id} className={setClassName(todoListProp, isCollapsed, isContentEditable)}>
+        <article id-list={prop.idList} className={setClassName(todoListProp, isCollapsed, isContentEditable)}>
             <ListTitle
                 isContentEditable={isContentEditable}
                 setIsContentEditable={setIsContentEditable}
@@ -57,11 +58,12 @@ export function ToDoList(prop: ToDoListProp) {
             <ul>
             {
                 todoListProp.elements.map(
-                    (task) => {
+                    (task: TaskProp) => {
                         return (
                         <Task
-                            id={task.id}
-                            key={task.id}
+                            idList={prop.idList}
+                            idTask={task.idTask}
+                            key={task.idTask}
                             checked={task.checked}
                             name={task.name} />
                         )

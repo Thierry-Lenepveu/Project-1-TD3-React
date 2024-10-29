@@ -2,7 +2,8 @@ import { useState } from "react";
 import OptionButton from "./OptionButton";
 
 export interface TaskProp {
-    id: string,
+    idList: string,
+    idTask: string,
     checked: boolean,
     name: string
 }
@@ -45,7 +46,9 @@ export function Task(prop: TaskProp) {
                             setChecked(!checked);
                         }
                     }/>
-                <Span id={prop.id} 
+                <Span
+                    idTask={prop.idTask}
+                    idList={prop.idList}
                     checked={checked}
                     name={prop.name} />
             </div>
